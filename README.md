@@ -13,29 +13,39 @@
 
 ## 安装
 
-### 方式一：Git Clone（推荐）
+### 方式一：一键安装（推荐）
 
 ```bash
+# 1. 克隆技能
 cd ~/.cursor/skills
 git clone https://github.com/caijiu01/a-share-thermometer.git
+
+# 2. 安装规则（启用 /命令 触发）
+mkdir -p ~/.cursor/rules
+cp ~/.cursor/skills/a-share-thermometer/RULE.md ~/.cursor/rules/a-share-thermometer.md
 ```
 
-### 方式二：手动下载
+### 方式二：手动安装
 
 1. 下载本仓库所有文件
-2. 将 `a-share-thermometer` 文件夹复制到：
-   - macOS/Linux: `~/.cursor/skills/`
-   - Windows: `%USERPROFILE%\.cursor\skills\`
+2. 将 `a-share-thermometer` 文件夹复制到 `~/.cursor/skills/`
+3. 将 `RULE.md` 复制到 `~/.cursor/rules/a-share-thermometer.md`（启用 /命令）
 
 ### 目录结构
 
+安装后的文件结构：
+
 ```
-~/.cursor/skills/
-└── a-share-thermometer/
-    ├── SKILL.md        # 主技能定义（温度计算、评估框架）
-    ├── reference.md    # 参考数据（历史阈值、行业基准）
-    ├── examples.md     # 示例输出（不同温度场景）
-    └── README.md       # 本文件
+~/.cursor/
+├── skills/
+│   └── a-share-thermometer/
+│       ├── SKILL.md        # 主技能定义
+│       ├── RULE.md         # 规则文件（需复制到 rules 目录）
+│       ├── reference.md    # 参考数据
+│       ├── examples.md     # 示例输出
+│       └── README.md       # 本文件
+└── rules/
+    └── a-share-thermometer.md   # ← 从 RULE.md 复制
 ```
 
 ## 五大核心指标 + 宽度修正
