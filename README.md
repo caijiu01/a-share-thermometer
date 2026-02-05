@@ -1,6 +1,6 @@
 # A股温度计 🌡️
 
-一个 Cursor Agent Skill，量化评估 A 股市场的冷热程度，像温度计一样直观显示市场状态。
+量化评估 A 股市场的冷热程度，像温度计一样直观显示市场状态。
 
 ## 功能
 
@@ -10,43 +10,6 @@
 - **五维体检**：估值、杠杆、IPO、利差、盈利周期
 - **投资建议**：针对不同风险偏好的具体策略
 - **风险预警**：当前市场的主要风险点
-
-## 安装
-
-### 方式一：一键安装（推荐）
-
-```bash
-# 1. 克隆技能
-cd ~/.cursor/skills
-git clone https://github.com/caijiu01/a-share-thermometer.git
-
-# 2. 安装规则（启用 /命令 触发）
-mkdir -p ~/.cursor/rules
-cp ~/.cursor/skills/a-share-thermometer/RULE.md ~/.cursor/rules/a-share-thermometer.md
-```
-
-### 方式二：手动安装
-
-1. 下载本仓库所有文件
-2. 将 `a-share-thermometer` 文件夹复制到 `~/.cursor/skills/`
-3. 将 `RULE.md` 复制到 `~/.cursor/rules/a-share-thermometer.md`（启用 /命令）
-
-### 目录结构
-
-安装后的文件结构：
-
-```
-~/.cursor/
-├── skills/
-│   └── a-share-thermometer/
-│       ├── SKILL.md        # 主技能定义
-│       ├── RULE.md         # 规则文件（需复制到 rules 目录）
-│       ├── reference.md    # 参考数据
-│       ├── examples.md     # 示例输出
-│       └── README.md       # 本文件
-└── rules/
-    └── a-share-thermometer.md   # ← 从 RULE.md 复制
-```
 
 ## 五大核心指标 + 宽度修正
 
@@ -97,16 +60,6 @@ Windows: %USERPROFILE%\.cursor\skills\
 - "A股目前处于什么状态"
 - "现在是顶部还是底部"
 
-### 命令式调用（推荐）
-- `/A股温度计`
-- `/温度计`
-- `/a股`
-
-### 温度查询类
-- "A股现在多少度"
-- "市场温度怎么样"
-- "A股热不热"
-
 ### 分析评估类
 - "帮我分析下A股"
 - "大盘现在怎么样"
@@ -134,40 +87,34 @@ A股该买还是该卖？
 
 ```
 a-share-thermometer/
-├── SKILL.md        # 主技能定义（温度计算、评估框架）
-├── reference.md    # 参考数据（历史阈值、行业基准）
-├── examples.md     # 示例输出（不同温度场景）
-└── README.md       # 本文件
+├── SKILL.md            # 主技能定义（温度计算、评估框架）
+├── RULE.md             # 规则文件（/命令触发）
+├── fetch_market_data.py # 实时数据获取脚本 ⭐
+├── reference.md        # 参考数据（历史阈值、行业基准）
+├── examples.md         # 示例输出（不同温度场景）
+├── install.sh          # 一键安装脚本
+└── README.md           # 本文件
 ```
 
-## 交易日判断
+## 实时数据获取
 
-技能会自动判断目标交易日：
-- **交易日 + 未收盘（<15:00）**：评估上一个交易日
-- **交易日 + 已收盘（≥15:00）**：评估当天
-- **非交易日（周末/节假日）**：评估最近的交易日
+技能内置 `fetch_market_data.py` 脚本，自动从API获取实时数据：
 
-## 数据来源
+**数据源**：
+- 腾讯财经API（优先）
+- 东方财富API（备用）
 
-技能会尝试从以下渠道获取数据：
-- 网络搜索（财经新闻、研报）
-- 财经网站抓取（东方财富、同花顺等）
-
-**注意**：由于实时数据获取存在限制，可能需要用户提供当日关键数据。
+**测试脚本**：
+```bash
+python3 ~/.cursor/skills/a-share-thermometer/fetch_market_data.py
+```
 
 ## 注意事项
 
-1. **数据时效性**：需要获取实时/近期市场数据才能生成准确报告
+1. **数据时效性**：技能会自动调用脚本获取实时数据，确保准确性
 2. **投资建议免责**：报告仅供参考，不构成投资建议
 3. **结构性分析**：注意区分整体与结构，避免"一刀切"结论
-
-## 更新日志
-
-- **v1.0.0** (2026-02-04)
-  - 初始版本
-  - 五维指标体系（估值、杠杆、IPO、利差、盈利周期）
-  - 市场宽度修正
-  - 温度可视化（0-100°）
+4. **依赖要求**：需要系统安装 `curl` 和 `python3`（macOS/Linux 通常已自带）
 
 ## License
 
